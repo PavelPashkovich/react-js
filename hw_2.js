@@ -6,14 +6,11 @@ const numbers = [
 ];
 
 const showMostFrequentElem = (array) => {
-  const countArrayItems = (array) => {
-    return array.reduce((result, item) => {
+  const obj = array.reduce((result, item) => {
       result[item] = !result[item] ? 1 : result[item] + 1;
       return result;
     }, {});
-  };
 
-  let obj = countArrayItems(array);
   let max = 0;
   for (let key in obj) {
     max = max < obj[key] ? obj[key] : max;
@@ -26,7 +23,7 @@ const showMostFrequentElem = (array) => {
       objElem[item[0]] = item[1];
     }
   }
-  console.log(objElem);
+  console.log(Object.keys(objElem)[0]);
 };
 showMostFrequentElem(numbers);
 
@@ -190,14 +187,15 @@ const boxarts = [
 ];
 
 const getMaxAreaUrl = (boxarts) => {
-  const maxArea = Math.max(
-    ...boxarts.map((boxart) => boxart.width * boxart.height)
-  );
-  return boxarts.reduce((result, boxart) => {
-    if (boxart.width * boxart.height === maxArea) {
-      return boxart.url;
+  let maxArea = 0;
+  let url = '';
+  boxarts.reduce((result, boxart) => {
+    if (boxart.width * boxart.height > maxArea) {
+      maxArea = boxart.width * boxart.height;
+      url = boxart.url;
     }
   });
+  return url;
 };
 console.log(getMaxAreaUrl(boxarts));
 
