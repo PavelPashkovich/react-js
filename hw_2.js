@@ -7,9 +7,9 @@ const numbers = [
 
 const showMostFrequentElem = (array) => {
   const obj = array.reduce((result, item) => {
-      result[item] = !result[item] ? 1 : result[item] + 1;
-      return result;
-    }, {});
+    result[item] = !result[item] ? 1 : result[item] + 1;
+    return result;
+  }, {});
 
   let max = 0;
   for (let key in obj) {
@@ -26,6 +26,21 @@ const showMostFrequentElem = (array) => {
   console.log(Object.keys(objElem)[0]);
 };
 showMostFrequentElem(numbers);
+
+const findMostFrequentNumber = (numbers) => {
+  const numbersCount = numbers.reduce((result, number) => {
+    if (!result[number]) {
+      result[number] = 1;
+    } else {
+      result[number] = result[number] + 1;
+    }
+    return result;
+  }, {});
+  return Object.entries(numbersCount).reduce((result, item) => {
+    return result[1] > item[1] ? result : item;
+  })[0];
+};
+console.log(findMostFrequentNumber(numbers));
 
 // 1. Функция принимает массив пользователей. Исходные данные см. ниже. Возвращает объект, состоящий из двух полей: female и male. Данные
 // поля являются массивами, в которых содержаться пользователи, подходящие по категории gender соответственно.
@@ -59,6 +74,7 @@ const users = [
   },
 ];
 
+// var 1
 const sortByGender = (users) => {
   return users.reduce((result, user) => {
     const userGender = user.gender;
@@ -74,6 +90,27 @@ const sortByGender = (users) => {
   }, {});
 };
 console.log(sortByGender(users));
+console.log(users);
+
+// var 2
+
+const sortByGender2 = (users) => {
+  return users.reduce((result, user) => {
+    const { first_name, last_name, gender, ...restUserData } = user;
+    const userToPush = {
+      ...restUserData,
+      fullName: `${first_name} ${last_name}`,
+      gender,
+    };
+    if (!result[gender]) {
+      result[gender] = [userToPush];
+    } else {
+      result[gender].push(userToPush);
+    }
+    return result;
+  }, {});
+};
+console.log(sortByGender2(users));
 
 // 2.Преобразуйте массив в объект используя функцию reduce.
 
@@ -186,9 +223,10 @@ const boxarts = [
   },
 ];
 
+// var 1
 const getMaxAreaUrl = (boxarts) => {
   let maxArea = 0;
-  let url = '';
+  let url = "";
   boxarts.reduce((result, boxart) => {
     if (boxart.width * boxart.height > maxArea) {
       maxArea = boxart.width * boxart.height;
@@ -198,6 +236,16 @@ const getMaxAreaUrl = (boxarts) => {
   return url;
 };
 console.log(getMaxAreaUrl(boxarts));
+
+// var 2
+const getMaxAreaUrl2 = (boxarts) => {
+  return boxarts.reduce((result, boxart) => {
+    const resultSquare = result.width * result.height;
+    const currentSquare = boxart.weight * boxart.height;
+    return resultSquare > currentSquare ? result.url : boxart.url;
+  });
+};
+console.log(getMaxAreaUrl2(boxarts));
 
 // 5. Написать функцию, которая принимает в себя массив числовых и строчных числовых значений.
 // Данная функция должна вернуть массив, в котором числовые значения исходного массива стали строчными,
@@ -215,8 +263,13 @@ console.log(numbersToStrings(array));
 const spider = ["M", "a", "r"];
 const man = ["v", "e", "l"];
 
+// var 1
 const spiderMan = (spider, man) => spider.concat(man);
 console.log(spiderMan(spider, man));
+
+//var 2
+const spiderMan2 = (spider, man) => [...spider, ...man];
+console.log(spiderMan2(spider, man));
 
 // 7. Написать функцию, которая принимает следующие значения: первым аргументом - строковое значение, вторым -
 // допустимое количество символов. Если длина строки больше, чем допустимое значение символов, строка должна
